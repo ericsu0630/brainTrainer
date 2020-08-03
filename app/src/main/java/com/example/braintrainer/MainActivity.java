@@ -14,35 +14,39 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     CountDownTimer timer;
+    View linearLayout, gridLayout, imageView, restartButton;
+    TextView finalText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        linearLayout = findViewById(R.id.linearLayout);
+        gridLayout = findViewById(R.id.gridLayout);
+        imageView = findViewById(R.id.imageView);
+        finalText = findViewById(R.id.finalScoreTextView);
+        restartButton = findViewById(R.id.restartButton);
+
         final TextView timerText = findViewById(R.id.countDownTextView);
         timer = new CountDownTimer(5000, 1000) {
             @Override
             public void onTick(long l) {
                 //update timer view
-                String timeLeft = String.valueOf(l/1000)+"s";
+                String timeLeft = l / 1000 +"s";
                 timerText.setText(timeLeft);
             }
 
             @Override
             public void onFinish() {
-                View linearLayout = (View) findViewById(R.id.linearLayout);
+
                 linearLayout.setVisibility(View.GONE);
-                View gridlayout = (View) findViewById(R.id.gridLayout);
-                gridlayout.setVisibility(View.GONE);
-                View imageView = (View) findViewById(R.id.imageView);
+                gridLayout.setVisibility(View.GONE);
                 imageView.setVisibility(View.VISIBLE);
-                TextView finalText = (TextView) findViewById(R.id.finalScoreTextView);
                 finalText.setVisibility(View.VISIBLE);
-                TextView scoreText = (TextView) findViewById(R.id.scoreTextView);
+                TextView scoreText = findViewById(R.id.scoreTextView);
                 String scoreStr = scoreText.getText().toString();
                 finalText.setText("Your final score is " + scoreStr);
-                View restartButton = (View) findViewById(R.id.restartButton);
                 restartButton.setVisibility(View.VISIBLE);
             }
         };
@@ -68,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
         //generateQuestion();
         Button goButton = findViewById(R.id.goButton);
         goButton.setVisibility(View.GONE);
-        View linearLayout = (View) findViewById(R.id.linearLayout);
-        View gridLayout = (View) findViewById(R.id.gridLayout);
         linearLayout.setVisibility(View.VISIBLE);
         gridLayout.setVisibility(View.VISIBLE);
+        imageView.setVisibility(View.GONE);
+        finalText.setVisibility(View.GONE);
+        restartButton.setVisibility(View.GONE);
         timer.start();
     }
 }
