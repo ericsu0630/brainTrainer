@@ -1,14 +1,12 @@
 package com.example.braintrainer;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     CountDownTimer timer;
     Button goButton;
     View linearLayout, gridLayout, imageView, restartButton;
-    TextView finalText, option1, option2, option3, option4, scoreText;
+    TextView finalText, option1, option2, option3, option4, scoreText, correctText;
     String s;
     int score, questionCount;
 
@@ -36,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         option4 = findViewById(R.id.option4TextView);
         scoreText = findViewById(R.id.scoreTextView);
         goButton = findViewById(R.id.goButton);
+        correctText = findViewById(R.id.correctTextView);
 
         final TextView timerText = findViewById(R.id.countDownTextView);
         timer = new CountDownTimer(60000, 1000) {
@@ -53,28 +52,38 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setVisibility(View.VISIBLE);
                 finalText.setVisibility(View.VISIBLE);
                 String scoreStr = scoreText.getText().toString();
-                finalText.setText("Your final score is " + scoreStr);
+                String finalStr = "Your final score is " + scoreStr;
+                finalText.setText(finalStr);
                 restartButton.setVisibility(View.VISIBLE);
+                correctText.setVisibility(View.GONE);
             }
         };
     }
 
     public void checkAnswer(View view){
-
         TextView clickedView = (TextView) view;
         String answer = clickedView.getText().toString();
+        String correct,sctxt;
         questionCount++;
         Log.i("selected/correct",answer+"/"+s);
         if(answer.equalsIgnoreCase(s)){
             score++;
+            correct = "Correct!";
+        }else{
+            correct = "Wrong!";
         }
-        scoreText.setText(score+"/"+questionCount);
+        sctxt = score+"/"+questionCount;
+        scoreText.setText(sctxt);
+        correctText.setText(correct);
+        correctText.setAlpha(1f);
+        correctText.animate().setDuration(1000).alpha(0).start();
+        correctText.setVisibility(View.VISIBLE);
         generateQuestion();
     }
 
     public void generateQuestion(){
         int num1, num2, shuffle, sum;
-        String n1,n2;
+        String n1,n2,qtxt;
         //generate question
         num1 = (int)(Math.random()*50); // random number from 0 to 50
         n1 = String.valueOf(num1);
@@ -83,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
         sum = num1 + num2;
         s = String.valueOf(sum);
         TextView question = findViewById(R.id.questionTextView);
-        question.setText(n1 + " + " + n2 +" = ?" );
+        qtxt = n1 + " + " + n2 +" = ?";
+        question.setText(qtxt);
         //generate array of 4 wrong answers
         String[] options = new String[4];
         for(int i = 0; i<options.length; i++){
