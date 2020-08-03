@@ -14,9 +14,11 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     CountDownTimer timer;
+    Button goButton;
     View linearLayout, gridLayout, imageView, restartButton;
-    TextView finalText, option1, option2, option3, option4;
-    int sum;
+    TextView finalText, option1, option2, option3, option4, scoreText;
+    String s;
+    int score, questionCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,11 @@ public class MainActivity extends AppCompatActivity {
         option2 = findViewById(R.id.option2TextView);
         option3 = findViewById(R.id.option3TextView);
         option4 = findViewById(R.id.option4TextView);
+        scoreText = findViewById(R.id.scoreTextView);
+        goButton = findViewById(R.id.goButton);
 
         final TextView timerText = findViewById(R.id.countDownTextView);
-        timer = new CountDownTimer(5000, 1000) {
+        timer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long l) {
                 String timeLeft = l / 1000 +"s";
@@ -48,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 gridLayout.setVisibility(View.GONE);
                 imageView.setVisibility(View.VISIBLE);
                 finalText.setVisibility(View.VISIBLE);
-                TextView scoreText = findViewById(R.id.scoreTextView);
                 String scoreStr = scoreText.getText().toString();
                 finalText.setText("Your final score is " + scoreStr);
                 restartButton.setVisibility(View.VISIBLE);
@@ -59,16 +62,19 @@ public class MainActivity extends AppCompatActivity {
     public void checkAnswer(View view){
 
         TextView clickedView = (TextView) view;
-        String answer = clickedView.getTag().toString();
-        Log.i("info", answer);
-        //update score
-        //new question
+        String answer = clickedView.getText().toString();
+        questionCount++;
+        Log.i("selected/correct",answer+"/"+s);
+        if(answer.equalsIgnoreCase(s)){
+            score++;
+        }
+        scoreText.setText(score+"/"+questionCount);
         generateQuestion();
     }
 
     public void generateQuestion(){
-        int num1, num2, shuffle;
-        String n1,n2,s;
+        int num1, num2, shuffle, sum;
+        String n1,n2;
         //generate question
         num1 = (int)(Math.random()*50); // random number from 0 to 50
         n1 = String.valueOf(num1);
@@ -81,23 +87,26 @@ public class MainActivity extends AppCompatActivity {
         //generate array of 4 wrong answers
         String[] options = new String[4];
         for(int i = 0; i<options.length; i++){
-            options[i] = String.valueOf((int)(Math.random()*99));
-
-            Log.i("options",options[i]);
+            do { //in case generated number is same as answer
+                options[i] = String.valueOf((int) (Math.random() * 99));
+            }while (options[i].equals(s));
         }
         //replace a random value with the right answer
         Random r = new Random();
-        shuffle = r.nextInt(4) + 1; //random number from 1 to 4
+        shuffle = r.nextInt(4); //random number from 0 to 3
         options[shuffle] = s;
+        //fill textView options
+        option1.setText(options[0]);
+        option2.setText(options[1]);
+        option3.setText(options[2]);
+        option4.setText(options[3]);
 
-        Log.i("answer block", String.valueOf(shuffle));
-        //generate wrong answers
-        //fill options
     }
 
     public void goButton(View view){
-        //generateQuestion();
-        Button goButton = findViewById(R.id.goButton);
+        score = 0;
+        questionCount = 0;
+        scoreText.setText(R.string.score_text);
         goButton.setVisibility(View.GONE);
         linearLayout.setVisibility(View.VISIBLE);
         gridLayout.setVisibility(View.VISIBLE);

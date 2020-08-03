@@ -2,14 +2,13 @@
     <string name="app_name">Brain Trainer</string>
     <string name="countdown_text">60s</string>
     <string name="question_text">14 + 20 = ?</string>
-    <string name="score_text">0/20</string>
+    <string name="score_text">0/0</string>
     <string name="option1_text">45</string>
     <string name="option2_text">12</string>
     <string name="option3_text">34</string>
     <string name="option4_text">37</string>
     <string name="go_button">GO!</string>
-    <string name="final_score_text">Your final score is 14/20</string>
+    <string name="final_score_text">Your final score is 0/0</string>
     <string name="restart_button_text">Play Again</string>
     <string name="confetti_imageview_text">confetti image</string>
-    <string name="final_text">Your final score is</string>
 </resources>
