@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goButton(View view){
+        Log.i("Button pressed","Game reset");
         score = 0;
         questionCount = 0;
         scoreText.setText(R.string.score_text);
